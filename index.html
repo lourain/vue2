@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue2</title>
+    <style>
+        input {
+            margin-top: 60%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        {{car.owner.ownerName}}
+        <p v-text='msg'></p>
+        <p v-text="name"></p>
+        <!-- <button v-on:click="click">click me</button> -->
+        <input type="text" v-model="car.owner.ownerName">
+
+
+    </div>
+</body>
+<script src="./require.js" data-main="built/main"></script>
+
+</html>

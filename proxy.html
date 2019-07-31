@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxy</title>
+    <style>
+        .container{
+            display: grid;
+            width: 100%;
+            height: 1000px;
+            /* grid-template-columns: 1fr 1fr; */
+            grid-template-areas: "header header"
+                                  "main silde"
+                                  "footer footer"
+        }
+        .header{
+            grid-area: header;
+            background: blanchedalmond;
+        }
+        .main{
+            grid-area: main;
+            background: purple;
+        }
+        .silde{
+            grid-area: silde;
+            background: lightgreen;
+        }
+        .footer{
+            grid-area: footer;
+            background: coral;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header"></div>
+        <div class="main"></div>
+        <div class="silde"></div>
+        <div class="footer"></div>
+    </div>
+</body>
+<script>
+    //proxy测试
+    let o = {
+        msg: 'hello world',
+        name: '李逸威',
+        time: '20190617',
+        list: [1, 2, 3],
+        car: {
+            brand: '大众',
+            color: 'yellow',
+            owner: {
+                ownerName: "lyw"
+            }
+        }
+    }
+    let handler = {
+        get(target, key) {
+            console.log(`${key}被劫持`);
+            if(typeof target[key] == 'object' && target[key] !== null){
+               return  new Proxy(target[key],handler)
+            }
+            return Reflect.get(target,key)
+        },
+        set(target, key, value) {
+            console.log(`${key}被设置`);
+            Reflect.set(target,key,value)
+        }
+    }
+
+    let data = new Proxy(o,{})
+    console.log(data.name);
+    
+
+    //继承demo
+    function SuperClass(id){
+        this.superValue = true
+        this.id = id
+        this.books = ['js','css','html']
+    }
+    SuperClass.prototype.getSuperValue = function() {
+        return this.superValue
+    }
+    function SubClass(id){
+        // this.subValue = false
+        SuperClass.call(this)
+    }
+    let s = new SuperClass()
+    SubClass.prototype = Object.create(s)
+    SubClass.prototype.constructor = SubClass
+    // let s = new SuperClass()
+    let instance1 = new SubClass(1)
+    let instance2 = new SubClass(2)
+    instance1.books.push('java')
+  console.log(instance1);
+  console.log(instance2);
+    
+  
+
+</script>
+
+</html>
